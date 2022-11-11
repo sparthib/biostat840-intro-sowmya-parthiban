@@ -1,17 +1,9 @@
 ---
 title: "Welcome! I'm Sowmya :) "
 
-listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-
 execute: 
   freeze: auto
-  
-page-layout: full
-title-block-banner: false
+ 
 ---
 
 

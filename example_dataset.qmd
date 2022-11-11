@@ -37,6 +37,7 @@ df <- drop_na(df)
 ### Glimpse data
 
 ```{R}
+#| label: glimpse
 glimpse(df)
 ```
 
