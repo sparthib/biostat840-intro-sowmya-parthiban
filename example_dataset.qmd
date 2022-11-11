@@ -65,7 +65,7 @@ Age_range, level = c("20-29", "30-39", "40-49", "50-59",
 unique(df$Age_range)
 ```
 
-::: {.column-margin}
+::: column-margin
 Converting Age_range to factors will make it easier to facet by it later while making plots
 :::
 
@@ -74,14 +74,18 @@ Converting Age_range to factors will make it easier to facet by it later while m
 ```{R}
 #| label: scatter plot 
 ggplot(df, aes(x=Age, y=Glucose)) +
-  geom_point(size=2)
+  geom_point(size=2)+ labs(title = "Trends in glucose level with age",
+              subtitle = "Plasma glucose concentration a 2 hours in an oral glucose tolerance test",
+              caption = "Data source: NIDDKD")
 ```
 
 View the distribution of glucose levels per age group using box plots.
 
 ```{R}
 #| label: box plot 
- ggplot(df, aes(x= Age_range, y= Glucose))+ geom_boxplot()
+ ggplot(df, aes(x= Age_range, y= Glucose))+ geom_boxplot()+ labs(title = "Glucose level distribution per age group",
+              subtitle = "Plasma glucose concentration a 2 hours in an oral glucose tolerance test",
+              caption = "Data source: NIDDKD")
 ```
 
 Make a histogram of number of pregnancies by age group.
@@ -91,17 +95,19 @@ Make a histogram of number of pregnancies by age group.
 #| label: histogram
 df_preg <- df |>  group_by(Age_range, Pregnancies) |> summarise(freq = n())
 ggplot(df_preg, aes(x = Pregnancies, y = freq )) + geom_bar(stat = "identity")+
-    facet_wrap(~Age_range)
+    facet_wrap(~Age_range)+ labs(title = "Histogram of pregancies ",
+              subtitle = "grouped by age_range",
+              caption = "Data source: NIDDKD")
 
 ```
 
-::: {.callout-note}
+::: callout-note
 ## Functions used- dplyr
 
 group_by , summarise, mutate, case_when, filter, glimpse
 :::
 
-::: {.callout-note}
+::: callout-note
 ## Functions used- ggplot2
 
 facet_wrap, geom_point(), geom_bar(), geom_boxplot()
