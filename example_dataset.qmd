@@ -1,31 +1,49 @@
 ---
 title: "example_dataset"
 editor: visual
+bibliography: references.bib
 ---
 
-https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database
+![](images/Diabetes%20Image_0.jpeg){fig-align="center"}
 
+Diabetes is a prevelant disorder that affects people from various backgrounds and across all age groups and genders. In females however, it is know to cause hormonal imbalance which can lead to pregnancy related issues [@mccance2011pregnancy], [@berger2016diabetes], [@simmons2011diabetes] .
 
+The PIMA diabetes dataset was originally created to predict whether a person has diabetes or not. All individuals in the dataset are over 21, and females and are of PIMA Indian descent. This page aims to do some preliminary analysis of some variables before they can be used for further exploration. This project can be interesting to anyone who is trying to explore factors related to diabetes in females. The data and dictionary for the datset can be [found here.](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database)
 
-```{R} 
+#### Questions I am asking are:
+
+How goes glucose level relate to age or age_group.
+
+What is the distribution of the number of pregnancies across different age groups.
+
+### Load packages
+
+```{R}
+#| label: load packages
 library("here")
 library("tidyverse")
-library("skimr")
 library("ggplot2")
 ```
 
+### Load data
+
 ```{R}
+#| label: load data
 df <- read_csv(here("datasets", "diabetes.csv"))
 df <- drop_na(df)
 
 ```
 
+### Glimpse data
+
 ```{R}
 glimpse(df)
 ```
 
-Add age-ranges 
+### Convert age to age_range
+
 ```{R }
+#| label: mutate data 
 df <- df |> mutate(
 Age_range = case_when(
 Age > 19 & Age <= 29 ~ "20-29",
@@ -46,39 +64,44 @@ Age_range, level = c("20-29", "30-39", "40-49", "50-59",
 unique(df$Age_range)
 ```
 
+::: {.column-margin}
+Converting Age_range to factors will make it easier to facet by it later while making plots
+:::
 
-
-Group by age range and make line plot of average glucose level 
+#### Trends in glucose level with age.
 
 ```{R}
- ggplot(df, aes(x= Age_range, y= Glucose))+ geom_boxplot()
-```
-
-
-
-functions used: 
-factor
-mutate
-case_when
-filter
-glimpse
-
-
-First question: 
-
-
-Trends in glucose level with age 
-```{R}
+#| label: scatter plot 
 ggplot(df, aes(x=Age, y=Glucose)) +
   geom_point(size=2)
 ```
 
-Make a histogram of number of pregnancies by age group. 
+View the distribution of glucose levels per age group using box plots.
+
+```{R}
+#| label: box plot 
+ ggplot(df, aes(x= Age_range, y= Glucose))+ geom_boxplot()
+```
+
+Make a histogram of number of pregnancies by age group.
 
 ```{R}
 
+#| label: histogram
 df_preg <- df |>  group_by(Age_range, Pregnancies) |> summarise(freq = n())
 ggplot(df_preg, aes(x = Pregnancies, y = freq )) + geom_bar(stat = "identity")+
     facet_wrap(~Age_range)
 
 ```
+
+::: {.callout-note}
+## Functions used- dplyr
+
+group_by , summarise, mutate, case_when, filter, glimpse
+:::
+
+::: {.callout-note}
+## Functions used- ggplot2
+
+facet_wrap, geom_point(), geom_bar(), geom_boxplot()
+:::
