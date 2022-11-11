@@ -1,0 +1,27 @@
+project:
+  title: "biostat840-intro-sowmya-parthiban"
+  type: website
+  output-dir: docs
+
+execute:
+  freeze: auto
+
+website:
+  title: "Stat Computing Project I"
+  #site-url: https://www.sowmya-parthiban.com
+
+
+  navbar:
+
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+
+format:
+  html:
+    theme: journal
+    css: styles.css
+    toc: true
+
+editor: visual
