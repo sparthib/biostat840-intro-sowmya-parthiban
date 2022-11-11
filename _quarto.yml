@@ -17,6 +17,7 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - example_dataset.qmd
 
 format:
   html:

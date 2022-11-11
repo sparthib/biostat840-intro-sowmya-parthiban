@@ -1,0 +1,84 @@
+---
+title: "example_dataset"
+editor: visual
+---
+
+https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database
+
+
+
+```{R} 
+library("here")
+library("tidyverse")
+library("skimr")
+library("ggplot2")
+```
+
+```{R}
+df <- read_csv(here("datasets", "diabetes.csv"))
+df <- drop_na(df)
+
+```
+
+```{R}
+glimpse(df)
+```
+
+Add age-ranges 
+```{R }
+df <- df |> mutate(
+Age_range = case_when(
+Age > 19 & Age <= 29 ~ "20-29",
+Age > 29 & Age <= 39 ~ "30-39",
+Age > 39 & Age <= 49 ~ "40-49",
+Age > 49 & Age <= 59 ~ "50-59",
+Age > 59 & Age <= 69 ~ "60-69",
+Age > 69 & Age <= 79 ~ "70-79",
+Age > 79 & Age <= 89 ~ "80-89",
+Age > 89 & Age <= 99 ~ "90-99" ),
+#convert to factor
+Age_range = factor(
+Age_range, level = c("20-29", "30-39", "40-49", "50-59",
+"60-69", "70-79", "80-89", "90-99")
+
+))
+#make sure the age ranges are what we want
+unique(df$Age_range)
+```
+
+
+
+Group by age range and make line plot of average glucose level 
+
+```{R}
+ ggplot(df, aes(x= Age_range, y= Glucose))+ geom_boxplot()
+```
+
+
+
+functions used: 
+factor
+mutate
+case_when
+filter
+glimpse
+
+
+First question: 
+
+
+Trends in glucose level with age 
+```{R}
+ggplot(df, aes(x=Age, y=Glucose)) +
+  geom_point(size=2)
+```
+
+Make a histogram of number of pregnancies by age group. 
+
+```{R}
+
+df_preg <- df |>  group_by(Age_range, Pregnancies) |> summarise(freq = n())
+ggplot(df_preg, aes(x = Pregnancies, y = freq )) + geom_bar(stat = "identity")+
+    facet_wrap(~Age_range)
+
+```
